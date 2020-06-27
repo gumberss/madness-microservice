@@ -1,0 +1,19 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/default/*
+      #- ./infra/k8s/dev/*
+build:
+  local:
+    push: false
+  artifacts:
+    - image: gumberss/ticketing-deno-auth
+      context: auth
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
