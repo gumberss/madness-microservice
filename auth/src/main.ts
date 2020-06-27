@@ -2,7 +2,7 @@ import { Application, Router } from '../deps.ts'
 
 const router = new Router()
 
-router.get('/', context => {
+router.get('/',context => {
   context.response.body = "Hi there!"
 })
 

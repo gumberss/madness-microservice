@@ -4,13 +4,14 @@ EXPOSE 9000
 
 WORKDIR /app
 
-USER deno
+COPY .deno_plugins .
 
 COPY deps.ts .
-RUN deno cache deps.ts
+
+RUN deno run --unstable --allow-plugin --allow-net --allow-read --allow-write deps.ts
 
 ADD . .
 
 #RUN deno cache src/main.ts
 
-CMD [ "run", "--allow-net", "src/main.ts"]
+CMD ["run", "--unstable","--allow-plugin","--allow-net", "--allow-read", "--allow-write", "src/main.ts"]
