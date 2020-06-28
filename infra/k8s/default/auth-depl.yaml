@@ -15,6 +15,13 @@ spec:
       containers:
         - name: ticketing-deno-auth
           image: gumberss/ticketing-deno-auth
+      #     volumeMounts:
+      #       - mountPath: /deno-dir
+      #         name: deno-cache
+      # volumes:
+      #   - name: deno-cache
+      #     emptyDir: {}
+
           #env:
            # - name: MONGO_URI
               #value: '123'
@@ -29,6 +36,6 @@ spec:
   ports:
     - name: auth-port
       protocol: TCP
-      port: 9000
-      targetPort: 9000
+      port: 9005
+      targetPort: 9005
 

@@ -1,14 +1,17 @@
-import { Application, Router } from '../deps.ts'
+import { opine, Router } from '../deps.ts'
 
-const router = new Router()
+console.log('Start to listen')
 
-router.get('/',context => {
-  context.response.body = "Hi there!"
+const app = opine()
+
+const currentRoute = Router()
+
+currentRoute.get('/', (a, b) => {
+	b.send({
+		title: 'hii',
+	})
 })
 
-const app = new Application()
-
-app.use(router.routes())
-app.use(router.allowedMethods())
-
-await app.listen({ port: 9000 })
+app.use('/lala', currentRoute)
+console.log('Start to listen')
+app.listen({ port: 9005 }, () => console.log('Listening on port 9005'))
