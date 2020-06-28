@@ -8,12 +8,12 @@ RUN deno install --allow-read --allow-run --allow-write --allow-net -f --unstabl
 
 
 COPY deps.ts .
-RUN deno cache deps.ts
+RUN deno cache --unstable deps.ts
 
 ADD . .
-RUN deno cache src/main.ts
+RUN deno cache --unstable src/main.ts
 
 
 ENTRYPOINT ["/root/.deno/bin/denon"]
-CMD ["run","--allow-net", "--allow-read", "--allow-write", "src/main.ts"]
+CMD ["run","--allow-net", "--unstable", "--allow-plugin", "--allow-read", "--allow-write", "src/main.ts"]
 
