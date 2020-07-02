@@ -2,10 +2,12 @@ import { Router, validator } from '../../deps.ts'
 import { RequestValidationError } from '../errors/request-validation-errors.ts'
 import { BusinessError } from '../errors/business-error.ts'
 import { User } from '../models/user.ts'
+import { UserRepository } from '../repositories/user-repository.ts'
+import { BadRequestError } from '../errors/bad-request-error.ts'
 
 const router = Router()
 
-router.post('/api/users/signup', async (req , res) => {
+router.post('/api/users/signup', async (req, res) => {
 	const { email, password } = req.parsedBody as User
 
 	let errors: BusinessError[] = []
@@ -24,12 +26,15 @@ router.post('/api/users/signup', async (req , res) => {
 		})
 	}
 
-  if (errors.length) throw new RequestValidationError(errors)
+	if (errors.length) throw new RequestValidationError(errors)
+
+	const user = await new UserRepository().findOne({ email })
+
+	if (user) throw new BadRequestError('Email in use')
 
 	res.json({
 		ok: 'ok',
 	})
 })
 
-
-export  {router as SignupRoute}
+export { router as SignupRoute }
