@@ -1,3 +1,4 @@
 .deno_plugins
 obj
 bin
+out
