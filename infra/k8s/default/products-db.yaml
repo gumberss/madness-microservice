@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: products-db-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: madness-products-db
+  template:
+    metadata:
+      labels:
+        app: madness-products-db
+    spec:
+      containers:
+        - name: madness-products-db
+          image: mcr.microsoft.com/mssql/server:2019-latest
+          ports:
+            - containerPort: 1433
+          env:
+            - name: MSSQL_PID
+              value: "Developer"
+            - name: ACCEPT_EULA
+              value: "Y"
+            - name: SA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mssql
+                  key: SA_PASSWORD 
+         
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: products-db-srv
+spec:
+  selector:
+    app: madness-products-db
+  ports:
+    - name: products-db-port
+      protocol: TCP
+      port: 1433
+      targetPort: 1433
+  type: LoadBalancer
+  
