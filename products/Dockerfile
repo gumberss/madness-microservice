@@ -2,7 +2,12 @@ FROM mcr.microsoft.com/dotnet/core/sdk:3.1.301-alpine3.12 as build-env
 WORKDIR /app
 EXPOSE 80
 
-COPY *.csproj ./
+COPY Products.sln ./
+
+COPY Domain/Domain.csproj Domain/
+COPY Infra/Infra.csproj Infra/
+COPY WebApi/WebApi.csproj WebApi/
+
 RUN dotnet restore
 
 COPY . ./

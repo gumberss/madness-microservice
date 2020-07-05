@@ -12,9 +12,19 @@ namespace Infra.Contexts
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            var dbUri = Environment.GetEnvironmentVariable("DB_URI");
+            var saPassword = Environment.GetEnvironmentVariable("SA_PASSWORD");
+
+            if (dbUri == null)
+                throw new Exception("DB_URI must be defined");
+
+            if (saPassword == null)
+                throw new Exception("SA_PASSWORD must be defined");
+
+            var connString = dbUri.Replace("[[PASSWORD]]", saPassword);
+
             optionsBuilder
-                //.UseSqlServer(Environment.GetEnvironmentVariable("DB_URI"), providerOptions => providerOptions.CommandTimeout(60))
-                .UseSqlServer(@"Server=localhost\sqlexpress;Database=Products;User Id=sa;Password=P@ssw0rd!;", providerOptions => providerOptions.CommandTimeout(60)) // just for test
+                .UseSqlServer(connString, providerOptions => providerOptions.CommandTimeout(60))
                 .UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll);
         }
 
