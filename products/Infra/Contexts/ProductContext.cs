@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Contexts
@@ -23,6 +24,6 @@ namespace Infra.Contexts
         {
             //model configurations
         }
-        //public DbSet<Product> Products { get; set; }
+        public DbSet<Product> Products { get; set; }
     }
 }
