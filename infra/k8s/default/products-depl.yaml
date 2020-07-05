@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: products-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: madness-products
+  template:
+    metadata:
+      labels:
+        app: madness-products
+    spec:
+      containers:
+        - name: madness-products
+          image: gumberss/madness-products
+          env:
+            - name: DB_URI
+              value: "Server=products-db-srv;Database=Products;User Id=sa;Password=[[PASSWORD]];"
+            - name: SA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mssql
+                  key: SA_PASSWORD 
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  name: products-depl
+spec:
+  selector:
+    app: madness-products
+  ports:
+    - name: products-port
+      protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
+
