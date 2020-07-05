@@ -4,7 +4,7 @@ deploy:
   kubectl:
     manifests:
       - ./infra/k8s/default/*
-      #- ./infra/k8s/dev/*
+      - ./infra/k8s/dev/*
 build:
   local:
     push: false
@@ -17,3 +17,7 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
+    - image: gumberss/madness-products
+      context: products
+      docker:
+        dockerfile: Dockerfile
