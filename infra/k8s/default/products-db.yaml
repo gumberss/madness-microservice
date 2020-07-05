@@ -27,8 +27,6 @@ spec:
                 secretKeyRef:
                   name: mssql
                   key: SA_PASSWORD 
-         
-
 ---
 apiVersion: v1
 kind: Service
@@ -43,4 +41,3 @@ spec:
       port: 1433
       targetPort: 1433
   type: LoadBalancer
-  
