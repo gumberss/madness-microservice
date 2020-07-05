@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Domain.Models;
+using Infra.Contexts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -10,10 +12,12 @@ namespace WebApi.Controllers
     public class ProductController : ControllerBase
     {
         private readonly ILogger<ProductController> _logger;
+        private readonly ProductContext _productContext;
 
-        public ProductController(ILogger<ProductController> logger)
+        public ProductController(ILogger<ProductController> logger, ProductContext productContext)
         {
             _logger = logger;
+            _productContext = productContext;
         }
 
         [HttpGet]
@@ -28,9 +32,11 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public void Post()
+        public async Task<IActionResult> Post([FromBody] Product product)
         {
+            await _productContext.AddAsync(product);
 
+            return Ok(product);
         }
     }
 }
