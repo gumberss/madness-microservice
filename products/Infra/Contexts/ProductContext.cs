@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,7 +14,7 @@ namespace Infra.Contexts
         {
             optionsBuilder
                 //.UseSqlServer(Environment.GetEnvironmentVariable("DB_URI"), providerOptions => providerOptions.CommandTimeout(60))
-                .UseSqlServer("", providerOptions => providerOptions.CommandTimeout(60)) // just for test
+                .UseSqlServer(@"Server=localhost\sqlexpress;Database=Products;User Id=sa;Password=P@ssw0rd!;", providerOptions => providerOptions.CommandTimeout(60)) // just for test
                 .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         }
 
