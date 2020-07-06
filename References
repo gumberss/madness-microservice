@@ -21,6 +21,9 @@ How to use Entity Framework core:
 	- https://www.slant.co/topics/543/~best-unit-testing-frameworks-for-net#2
 	- https://stackoverflow.com/questions/9769047/nunit-vs-xunit
 	- https://github.com/microsoft/vstest/issues/1870#issuecomment-452120663
+
+- scoped, transient
+	- https://stackoverflow.com/questions/38138100/addtransient-addscoped-and-addsingleton-services-differences#:~:text=Transient%20objects%20are%20always%20different,but%20different%20across%20different%20requests.
 	
 	
 	
