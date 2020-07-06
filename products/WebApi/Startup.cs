@@ -1,3 +1,4 @@
+using Domain.Services;
 using Infra.Contexts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,6 +24,8 @@ namespace WebApi
             services.AddControllers();
 
             services.AddAuthorization();
+
+            services.AddScoped<ProductValidator>();
 
             services.AddDbContext<ProductsContext>();
         }

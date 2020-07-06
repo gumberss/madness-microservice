@@ -4,6 +4,7 @@ EXPOSE 80
 
 COPY Products.sln ./
 
+COPY Tests/Tests.csproj Tests/
 COPY Domain/Domain.csproj Domain/
 COPY Infra/Infra.csproj Infra/
 COPY WebApi/WebApi.csproj WebApi/

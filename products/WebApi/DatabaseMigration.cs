@@ -17,11 +17,13 @@ namespace WebApi
                 {
                     var db = services.GetRequiredService<T>();
                     db.Database.Migrate();
+                    Console.WriteLine("Database migrated");
                 }
                 catch (Exception ex)
                 {
                     var logger = services.GetRequiredService<ILogger<Program>>();
                     logger.LogError(ex, "An error occurred while migrating the database.");
+                    Console.WriteLine("An error occurred while migrating the database.");
                 }
             }
             return webHost;

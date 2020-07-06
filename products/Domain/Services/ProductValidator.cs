@@ -11,6 +11,12 @@ namespace Domain.Services
         {
             var errors = new List<BusinessError>(2);
 
+            if(product == null)
+            {
+                errors.Add(new BusinessError("The product must be valid", "Product"));
+                return errors;
+            }
+
             if (String.IsNullOrEmpty(product.Title))
             {
                 errors.Add(new BusinessError("The product title must be valid", "Title"));

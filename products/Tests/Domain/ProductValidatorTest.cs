@@ -78,5 +78,17 @@ namespace Tests.Domain
 
             errors.Should().HaveCount(0);
         }
+
+        [Fact]
+        public void Should_return_an_error_when_a_product_is_null()
+        {
+            Product product = null;
+
+            var errors = _service.Validate(product);
+
+            errors.Should().HaveCount(1);
+            errors.First().Message.Should().Be("The product must be valid");
+            errors.First().Field.Should().Be("Product");
+        }
     }
 }
