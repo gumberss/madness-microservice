@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Contexts
 {
-    public class ProductContext : DbContext
+    public class ProductsContext : DbContext
     {
-        public ProductContext(DbContextOptions options) : base(options)
+        public ProductsContext(DbContextOptions options) : base(options)
         {
         }
 
