@@ -1,0 +1,26 @@
+How to use Entity Framework core:
+	- https://www.entityframeworktutorial.net/efcore/entity-framework-core-dbcontext.aspx
+	- https://docs.microsoft.com/pt-br/ef/core/miscellaneous/configuring-dbcontext
+	- https://docs.microsoft.com/pt-br/ef/core/miscellaneous/cli/dbcontext-creation
+	- https://mattferderer.com/entity-framework-no-type-was-specified-for-the-decimal-column
+
+.net core + sql server alpine 
+	- https://github.com/dotnet/SqlClient/issues/220
+	
+.net core + docker + migrations:
+	- https://docs.microsoft.com/pt-br/archive/msdn-magazine/2019/april/data-points-ef-core-in-a-docker-containerized-app
+	
+- ingress-nginx:
+	- https://kubernetes.github.io/ingress-nginx/deploy/
+	
+- xUnit
+	- You'll need all these three packages:
+	    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
+		<PackageReference Include="xunit.core" Version="2.4.1" />
+		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.2">
+	- https://www.slant.co/topics/543/~best-unit-testing-frameworks-for-net#2
+	- https://stackoverflow.com/questions/9769047/nunit-vs-xunit
+	- https://github.com/microsoft/vstest/issues/1870#issuecomment-452120663
+	
+	
+	
