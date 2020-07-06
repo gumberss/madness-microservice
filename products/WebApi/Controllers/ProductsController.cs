@@ -1,40 +1,41 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Domain.Models;
 using Infra.Contexts;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ProductController : ControllerBase
+    public class ProductsController : ControllerBase
     {
-        private readonly ILogger<ProductController> _logger;
-        private readonly ProductContext _productContext;
+        private readonly ILogger<ProductsController> _logger;
+        private readonly ProductsContext _productContext;
 
-        public ProductController(ILogger<ProductController> logger, ProductContext productContext)
+        public ProductsController(ILogger<ProductsController> logger, ProductsContext productContext)
         {
             _logger = logger;
             _productContext = productContext;
         }
 
         [HttpGet]
-        public IEnumerable<Product> Get()
+        public IActionResult Get()
         {
-            return new List<Product>{
-            new Product(){
-                Description = "teste",
+            var products = _productContext.Set<Product>().ToList();
 
-            }
-            };
+            return Ok(products);
         }
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] Product product)
         {
             await _productContext.AddAsync(product);
+
+            await _productContext.SaveChangesAsync();
 
             return Ok(product);
         }

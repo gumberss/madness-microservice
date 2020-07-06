@@ -18,8 +18,13 @@ namespace WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHealthChecks();
+
             services.AddControllers();
-            services.AddDbContext<ProductContext>();
+
+            services.AddAuthorization();
+
+            services.AddDbContext<ProductsContext>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
