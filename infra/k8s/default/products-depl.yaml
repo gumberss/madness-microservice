@@ -27,7 +27,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata: 
-  name: products-depl
+  name: products-srv
 spec:
   selector:
     app: madness-products
@@ -36,5 +36,4 @@ spec:
       protocol: TCP
       port: 80
       targetPort: 80
-  type: LoadBalancer
 
