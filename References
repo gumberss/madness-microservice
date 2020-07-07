@@ -25,6 +25,6 @@ xUnit
 scoped, transient
 	- https://stackoverflow.com/questions/38138100/addtransient-addscoped-and-addsingleton-services-differences#:~:text=Transient%20objects%20are%20always%20different,but%20different%20across%20different%20requests.
 	
-Should I have a query microservice 
+Should I have a query microservice (CQRS)
 	- https://microservices.io/patterns/data/cqrs.html
 	
