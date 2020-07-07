@@ -10,10 +10,10 @@ How to use Entity Framework core:
 .net core + docker + migrations:
 	- https://docs.microsoft.com/pt-br/archive/msdn-magazine/2019/april/data-points-ef-core-in-a-docker-containerized-app
 	
-- ingress-nginx:
+ingress-nginx:
 	- https://kubernetes.github.io/ingress-nginx/deploy/
 	
-- xUnit
+xUnit
 	- You'll need all these three packages:
 	    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
 		<PackageReference Include="xunit.core" Version="2.4.1" />
@@ -22,8 +22,9 @@ How to use Entity Framework core:
 	- https://stackoverflow.com/questions/9769047/nunit-vs-xunit
 	- https://github.com/microsoft/vstest/issues/1870#issuecomment-452120663
 
-- scoped, transient
+scoped, transient
 	- https://stackoverflow.com/questions/38138100/addtransient-addscoped-and-addsingleton-services-differences#:~:text=Transient%20objects%20are%20always%20different,but%20different%20across%20different%20requests.
 	
-	
+Should I have a query microservice 
+	- https://microservices.io/patterns/data/cqrs.html
 	
