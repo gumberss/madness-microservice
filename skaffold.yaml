@@ -17,6 +17,14 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
+    - image: gumberss/madness-stock
+      context: stock
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
     - image: gumberss/madness-products
       context: products
       docker:
