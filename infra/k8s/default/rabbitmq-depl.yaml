@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: madness-rabbitmq-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: madness-rabbitmq
+  template:
+    metadata:
+      labels:
+        app: madness-rabbitmq
+    spec:
+      containers:
+        - name: madness-rabbitmq
+          image: rabbitmq:3.8.5-management
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: madness-rabbitmq-srv
+spec:
+  selector:
+    app: madness-rabbitmq
+  ports:
+    - name: madness-rabbitmq-port
+      protocol: TCP
+      port: 5672 
+      targetPort: 5672 
+    - name: madness-rabbitmq-monitoring-port
+      protocol: TCP
+      port: 15672 
+      targetPort: 15672 
+  
+    
