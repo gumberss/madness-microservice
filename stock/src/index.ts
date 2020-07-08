@@ -24,6 +24,10 @@ const start = async () => {
 		}
 
 		await rabbitMq.connect(process.env.RABBITMQ_URL)
+		await rabbitMq.registerQueue('ex','q')
+		rabbitMq.channel.consume('q', msg => {
+			console.log(msg)
+		})
 
 		await mongoose.connect(process.env.MONGO_URI, {
 			useNewUrlParser: true,

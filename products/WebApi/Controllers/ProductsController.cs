@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Domain.Exceptions;
 using Domain.Models;
@@ -8,6 +10,7 @@ using Infra.Contexts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using RabbitMQ.Client;
 
 namespace WebApi.Controllers
 {
@@ -47,6 +50,24 @@ namespace WebApi.Controllers
             await _productContext.AddAsync(product);
 
             await _productContext.SaveChangesAsync();
+
+            var factory = new ConnectionFactory()
+            {
+                HostName = Environment.GetEnvironmentVariable("RABBITMQ_URL"),
+            };
+            using (var connection = factory.CreateConnection())
+            using (var channel = connection.CreateModel())
+            {
+                channel.ExchangeDeclare("ex", "fanout", false, false, null);
+
+                string message = "Comunication test";
+
+                var body = Encoding.UTF8.GetBytes(message);
+
+                channel.BasicPublish("ex", "", null, body);
+            }
+
+            Console.WriteLine("Press any key to exit the Sender App...");
 
             return Ok(product);
         }
