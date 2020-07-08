@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stock-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: madness-stock
+  template:
+    metadata:
+      labels:
+        app: madness-stock
+    spec:
+      containers:
+        - name: madness-stock 
+          image: gumberss/madness-stock
+          env:
+            - name: MONGO_URI
+              value: 'mongodb://stock-mongo-srv:27017/stock' 
+            - name: RABBITMQ_QUEUE_NAME
+              valueFrom: 
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: RABBITMQ_URL
+              value: 'amqp://madness-rabbitmq-srv'
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  name: stock-srv
+spec:
+  selector:
+    app: madness-stock
+  ports:
+    - name: stock-port
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
+
