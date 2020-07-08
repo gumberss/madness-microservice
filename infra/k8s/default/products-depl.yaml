@@ -23,6 +23,8 @@ spec:
                 secretKeyRef:
                   name: mssql
                   key: SA_PASSWORD 
+            - name: RABBITMQ_URL
+              value: 'madness-rabbitmq-srv'
 ---
 apiVersion: v1
 kind: Service
