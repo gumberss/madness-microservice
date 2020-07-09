@@ -29,7 +29,10 @@ const start = async () => {
 			useUnifiedTopology: true,
 			useCreateIndex: true,
 		})
+		console.log('Connected to database')
+		
 		await rabbitMq.connect(process.env.RABBITMQ_URL)
+		console.log('Connected to RabbitMq')
 
 		const listeners = [
 			new ProductCreatedListener(
@@ -42,7 +45,8 @@ const start = async () => {
 
 		await Promise.all(listeners)
 
-		console.log('Connected to database')
+		console.log('Listening all RabbitMq queues...')
+
 	} catch (err) {
 		console.log(err)
 	}
