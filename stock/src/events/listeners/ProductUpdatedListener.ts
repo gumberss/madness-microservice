@@ -1,12 +1,12 @@
 import { Listener } from './Listener'
 import { Message } from 'amqplib'
 
-export class ProductCreatedListener extends Listener<string> {
+export class ProductUpdatedListener extends Listener<string> {
 	constructor(queueName: string) {
-		super('product:created', queueName)
+		super('product:updated', queueName)
 	}
 
 	async consume(content: string, msg: Message): Promise<void> {
-		console.log(`created: ${content}`)
+		console.log(`updated: ${content}`)
 	}
 }
