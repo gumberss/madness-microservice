@@ -8,6 +8,7 @@ namespace Infra.Contexts
     {
         public ProductsContext(DbContextOptions options) : base(options)
         {
+            Database.Migrate();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
