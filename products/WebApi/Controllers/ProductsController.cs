@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Domain.Exceptions;
 using Domain.Models;
@@ -55,19 +57,55 @@ namespace WebApi.Controllers
             {
                 HostName = Environment.GetEnvironmentVariable("RABBITMQ_URL"),
             };
+
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
             {
-                channel.ExchangeDeclare("ex", "fanout", false, false, null);
+                channel.ExchangeDeclare("product:created", "fanout", false, false, null);
 
-                string message = "Comunication test";
+                string message = JsonSerializer.Serialize(product);
 
                 var body = Encoding.UTF8.GetBytes(message);
 
-                channel.BasicPublish("ex", "", null, body);
+                channel.BasicPublish("product:created", "", null, body);
             }
 
-            Console.WriteLine("Press any key to exit the Sender App...");
+            return Ok(product);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Put([FromBody] Product product)
+        {
+            var existentProduct = _productContext.Products.Find(product.Id);
+
+            existentProduct.Title = product.Title;
+            existentProduct.Price = product.Price;
+            existentProduct.Description = product.Description;
+
+            var errors = _productValidator.Validate(existentProduct);
+
+            if (errors.Any()) return BadRequest(errors);
+
+            _productContext.Update(existentProduct);
+
+            await _productContext.SaveChangesAsync();
+
+            var factory = new ConnectionFactory()
+            {
+                HostName = Environment.GetEnvironmentVariable("RABBITMQ_URL"),
+            };
+
+            using (var connection = factory.CreateConnection())
+            using (var channel = connection.CreateModel())
+            {
+                channel.ExchangeDeclare("product:updated", "fanout", false, false, null);
+
+                string message = JsonSerializer.Serialize(existentProduct);
+
+                var body = Encoding.UTF8.GetBytes(message);
+
+                channel.BasicPublish("product:updated", "", null, body);
+            }
 
             return Ok(product);
         }
