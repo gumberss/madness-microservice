@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using Domain.Exceptions;
 using Domain.Models;
 using Domain.Services;
 using Infra.Contexts;
+using Infra.Interfaces.Publishers;
+using Infra.Rabbit.Events;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using RabbitMQ.Client;
+using Rabbit.Events;
 
 namespace WebApi.Controllers
 {
@@ -23,15 +21,21 @@ namespace WebApi.Controllers
         private readonly ILogger<ProductsController> _logger;
         private readonly ProductsContext _productContext;
         private readonly ProductValidator _productValidator;
+        private readonly IProductUpdatedPublisher _productUpdatedPublisher;
+        private readonly IProductCreatedPublisher _productCreatedPublisher;
 
         public ProductsController(
             ILogger<ProductsController> logger
           , ProductsContext productContext
-          , ProductValidator productValidator)
+          , ProductValidator productValidator
+          , IProductUpdatedPublisher productUpdatedPublisher
+          , IProductCreatedPublisher productCreatedPublisher)
         {
             _logger = logger;
             _productContext = productContext;
             _productValidator = productValidator;
+            _productUpdatedPublisher = productUpdatedPublisher;
+            _productCreatedPublisher = productCreatedPublisher;
         }
 
         [HttpGet]
@@ -50,25 +54,14 @@ namespace WebApi.Controllers
             if (errors.Any()) return BadRequest(errors);
 
             await _productContext.AddAsync(product);
-
             await _productContext.SaveChangesAsync();
-
-            var factory = new ConnectionFactory()
+            _productCreatedPublisher.Publish(new ProductCreatedEvent
             {
-                HostName = Environment.GetEnvironmentVariable("RABBITMQ_URL"),
-            };
-
-            using (var connection = factory.CreateConnection())
-            using (var channel = connection.CreateModel())
-            {
-                channel.ExchangeDeclare("product:created", "fanout", false, false, null);
-
-                string message = JsonSerializer.Serialize(product);
-
-                var body = Encoding.UTF8.GetBytes(message);
-
-                channel.BasicPublish("product:created", "", null, body);
-            }
+                Id = product.Id,
+                Title = product.Title,
+                Price = product.Price,
+                Description = product.Description,
+            });
 
             return Ok(product);
         }
@@ -87,25 +80,15 @@ namespace WebApi.Controllers
             if (errors.Any()) return BadRequest(errors);
 
             _productContext.Update(existentProduct);
-
             await _productContext.SaveChangesAsync();
 
-            var factory = new ConnectionFactory()
+            _productUpdatedPublisher.Publish(new ProductUpdatedEvent
             {
-                HostName = Environment.GetEnvironmentVariable("RABBITMQ_URL"),
-            };
-
-            using (var connection = factory.CreateConnection())
-            using (var channel = connection.CreateModel())
-            {
-                channel.ExchangeDeclare("product:updated", "fanout", false, false, null);
-
-                string message = JsonSerializer.Serialize(existentProduct);
-
-                var body = Encoding.UTF8.GetBytes(message);
-
-                channel.BasicPublish("product:updated", "", null, body);
-            }
+                Id = existentProduct.Id,
+                Title = existentProduct.Title,
+                Price = existentProduct.Price,
+                Description = existentProduct.Description,
+            });
 
             return Ok(product);
         }
