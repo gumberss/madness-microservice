@@ -28,3 +28,8 @@ scoped, transient
 Should I have a query microservice (CQRS)
 	- https://microservices.io/patterns/data/cqrs.html
 	
+RabbitMq
+	- https://www.cloudamqp.com/blog/2018-01-19-part4-rabbitmq-13-common-errors.html
+	
+Why using Newtonsoft.Json:
+	- https://stackoverflow.com/questions/19445730/how-can-i-return-camelcase-json-serialized-by-json-net-from-asp-net-mvc-controll	 
