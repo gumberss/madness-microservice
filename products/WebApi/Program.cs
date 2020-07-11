@@ -8,7 +8,7 @@ namespace WebApi
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().MigrateDatabase<ProductsContext>().Run();
+            CreateHostBuilder(args).Build().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

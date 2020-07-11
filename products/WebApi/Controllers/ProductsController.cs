@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Domain.Exceptions;
+using Domain.Extensions;
 using Domain.Models;
 using Domain.Services;
 using Infra.Contexts;
@@ -12,6 +13,7 @@ using Infra.Interfaces.Publishers;
 using Infra.Rabbit.Events;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using MongoDB.Bson;
 using Rabbit.Events;
 
 namespace WebApi.Controllers
@@ -55,11 +57,13 @@ namespace WebApi.Controllers
 
             if (errors.Any()) return BadRequest(errors);
 
+            product.Id = ObjectId.GenerateNewId().AsGuid();
+
             await _productContext.AddAsync(product);
             await _productContext.SaveChangesAsync();
             _productCreatedPublisher.Publish(new ProductCreatedEvent
             {
-                Id = product.Id,
+                Id = product.Id.AsObjectId(),
                 Title = product.Title,
                 Price = product.Price,
                 Description = product.Description,
@@ -96,7 +100,7 @@ namespace WebApi.Controllers
 
             _productUpdatedPublisher.Publish(new ProductUpdatedEvent
             {
-                Id = existentProduct.Id,
+                Id = existentProduct.Id.AsObjectId(),
                 Title = existentProduct.Title,
                 Price = existentProduct.Price,
                 Description = existentProduct.Description,
