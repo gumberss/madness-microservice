@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Domain.Exceptions;
 using Domain.Models;
 using Domain.Services;
 using Infra.Contexts;
@@ -61,23 +63,33 @@ namespace WebApi.Controllers
                 Title = product.Title,
                 Price = product.Price,
                 Description = product.Description,
+                Version = product.Version
             });
 
             return Ok(product);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Put([FromBody] Product product)
+        [HttpPut("{id}")]   
+        public async Task<IActionResult> Put(Guid id, [FromBody] Product product)
         {
-            var existentProduct = _productContext.Products.Find(product.Id);
+            var errors = _productValidator.Validate(product);
+
+            if (errors.Any()) return BadRequest(errors);
+
+            var existentProduct = _productContext.Products.Find(id);
+
+            if (existentProduct == null)
+            {
+                return BadRequest(new List<BusinessError>
+                {
+                    new BusinessError("The product could not be found to be updated", "Product")
+                });
+            }
 
             existentProduct.Title = product.Title;
             existentProduct.Price = product.Price;
             existentProduct.Description = product.Description;
-
-            var errors = _productValidator.Validate(existentProduct);
-
-            if (errors.Any()) return BadRequest(errors);
+            existentProduct.Version++;
 
             _productContext.Update(existentProduct);
             await _productContext.SaveChangesAsync();
@@ -88,9 +100,10 @@ namespace WebApi.Controllers
                 Title = existentProduct.Title,
                 Price = existentProduct.Price,
                 Description = existentProduct.Description,
+                Version = existentProduct.Version
             });
 
-            return Ok(product);
+            return Ok(existentProduct);
         }
     }
 }

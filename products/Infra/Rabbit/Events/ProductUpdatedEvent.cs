@@ -11,5 +11,7 @@ namespace Rabbit.Events
         public decimal Price { get; set; }
 
         public String Description { get; set; }
+
+        public int Version { get; set; }
     }
 }

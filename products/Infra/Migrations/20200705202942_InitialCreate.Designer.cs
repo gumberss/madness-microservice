@@ -36,6 +36,10 @@ namespace Infra.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Version")
+                     .HasColumnType("int")
+                     .HasDefaultValue(0);
+
                     b.HasKey("Id");
 
                     b.ToTable("Products");

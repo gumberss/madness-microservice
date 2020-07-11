@@ -25,6 +25,9 @@ namespace Infra.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("Batman")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -33,6 +36,9 @@ namespace Infra.Migrations
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Version")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

@@ -14,7 +14,8 @@ namespace Infra.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     Title = table.Column<string>(nullable: true),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Description = table.Column<string>(nullable: true)
+                    Description = table.Column<string>(nullable: true),
+                    Version = table.Column<int>(nullable: true, defaultValue: 0)
                 },
                 constraints: table =>
                 {
