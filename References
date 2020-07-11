@@ -33,3 +33,14 @@ RabbitMq
 	
 Why using Newtonsoft.Json:
 	- https://stackoverflow.com/questions/19445730/how-can-i-return-camelcase-json-serialized-by-json-net-from-asp-net-mvc-controll	 
+
+ObjectId to Guid:
+	- https://www.it-swarm.dev/pt/c%23/conversao-.net-guid-para-mongodb-objectid/971147759/
+	
+Local Environment Variables:
+	- https://docs.microsoft.com/pt-br/aspnet/core/fundamentals/environments?view=aspnetcore-3.1
+	
+To Update Migrations using environment variables:
+	$env:DB_URI="YOUR_DB_URI"
+	$env:SA_PASSWORD="YOUR_PASSWORD"
+	Update-database
