@@ -1,9 +1,9 @@
 import mongoose from 'mongoose'
-import { rabbitMq } from './config/rabbitmq'
+import { rabbitMq } from './infra/rabbitmq/rabbitmq'
 
 import { app } from './app'
-import { ProductCreatedListener } from './events/listeners/ProductCreatedListener'
-import { ProductUpdatedListener } from './events/listeners/ProductUpdatedListener'
+import { ProductCreatedListener } from './infra/rabbitmq/listeners/ProductCreatedListener'
+import { ProductUpdatedListener } from "./infra/rabbitmq/listeners/ProductUpdatedListener"
 
 const start = async () => {
 	console.log('Starting up....')
