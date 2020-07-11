@@ -29,3 +29,7 @@ build:
       context: products
       docker:
         dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '**/**'
+            dest: .
