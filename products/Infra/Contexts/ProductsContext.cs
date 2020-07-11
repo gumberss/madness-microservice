@@ -12,8 +12,8 @@ namespace Infra.Contexts
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var dbUri = Environment.GetEnvironmentVariable("DB_URI") ?? "Server=127.0.0.1,6000;Database=Products;User Id=sa;Password=P@ssw0rd!;";
-            var saPassword = Environment.GetEnvironmentVariable("SA_PASSWORD") ?? "P@ssw0rd!";
+            var dbUri = Environment.GetEnvironmentVariable("DB_URI");
+            var saPassword = Environment.GetEnvironmentVariable("SA_PASSWORD");
 
             if (dbUri == null)
                 throw new Exception("DB_URI must be defined");

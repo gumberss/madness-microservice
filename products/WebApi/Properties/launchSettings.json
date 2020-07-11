@@ -14,7 +14,8 @@
       "launchBrowser": true,
       "launchUrl": "Product",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DB_URI": "Server=127.0.0.1,6000;Database=Products;User Id=sa;Password=[[PASSWORD]];"
       }
     },
     "WebApi": {
@@ -23,7 +24,8 @@
       "launchUrl": "Product",
       "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DB_URI": "Server=127.0.0.1,6000;Database=Products;User Id=sa;Password=[[PASSWORD]];"
       }
     }
   }
