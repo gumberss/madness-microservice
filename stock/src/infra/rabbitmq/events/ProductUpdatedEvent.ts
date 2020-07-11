@@ -3,4 +3,5 @@ export interface ProductUpdatedEvent {
 	title: string
 	price: string
 	description: string
+	version: number
 }
