@@ -1,10 +1,11 @@
 ﻿using System;
+using MongoDB.Bson;
 
 namespace Rabbit.Events
 {
     public class ProductUpdatedEvent
     {
-        public Guid Id { get; set; }
+        public ObjectId Id { get; set; }
 
         public String Title { get; set; }
 
