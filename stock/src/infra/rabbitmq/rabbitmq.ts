@@ -45,15 +45,22 @@ class Rabbit {
 		})
 	}
 
-	private async createQueue(queue: string): Promise<amqp.Replies.AssertQueue> {
+	private async createQueue(
+		exchange: string,
+		queue: string
+	): Promise<amqp.Replies.AssertQueue> {
 		return new Promise((resolve, reject) => {
-			this.channel.assertQueue(queue, { exclusive: true }, function (
-				error,
-				queue
-			) {
-				if (error) reject(error)
-				else resolve(queue)
-			})
+			this.channel.assertQueue(
+				queue,
+				{
+					exclusive: true,
+					deadLetterExchange: exchange,
+				},
+				function (error, queue) {
+					if (error) reject(error)
+					else resolve(queue)
+				}
+			)
 		})
 	}
 
@@ -62,7 +69,7 @@ class Rabbit {
 			durable: false,
 		})
 
-		const queue = await this.createQueue(queueName)
+		const queue = await this.createQueue(exchange, queueName)
 
 		this.channel.bindQueue(queue.queue, exchange, '')
 	}
