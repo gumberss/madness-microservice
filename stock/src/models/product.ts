@@ -15,7 +15,8 @@ interface ProductDoc extends mongoose.Document {
 }
 
 interface ProductModel extends mongoose.Model<ProductDoc> {
-	build(attrs: ProductAttrs): ProductDoc
+	build(attrs: ProductAttrs): ProductDoc,
+	findByEvent(event: { id: string; version: number }): Promise<ProductDoc | null>
 }
 
 const ProductSchema = new mongoose.Schema(
