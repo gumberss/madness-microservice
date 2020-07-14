@@ -3,6 +3,7 @@ import { Message } from 'amqplib'
 import { Exchanges } from '../exchanges'
 import { ProductCreatedEvent } from '../events/ProductCreatedEvent'
 import { Product } from '../../../models/product'
+import { Stock } from '../../../models/stock'
 
 export class ProductCreatedListener extends Listener<ProductCreatedEvent> {
 	readonly exchange = Exchanges.ProductCreated
@@ -24,6 +25,14 @@ export class ProductCreatedListener extends Listener<ProductCreatedEvent> {
 		})
 
 		await product.save()
+
+		const stock = Stock.build({
+			quantity: 0,
+			availableQuantity: 0,
+			product: product
+		})
+		
+		await stock.save()
 
 		console.log(`Product created: ${product._id}`)
 	}
