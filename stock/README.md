@@ -1,1 +1,1 @@
-![Stock flow](../master/documentation/stock_v0.1.png)
+![Stock flow](../documentation/stock_v0.1.png)
