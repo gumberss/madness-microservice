@@ -18,3 +18,7 @@ spec:
             backend:
               serviceName: products-srv
               servicePort: 80
+          - path: /stock/?(.*)
+            backend:
+              serviceName: stock-srv
+              servicePort: 3000
