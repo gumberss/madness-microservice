@@ -2,7 +2,9 @@ import express from 'express'
 import { json } from 'body-parser'
 import 'express-async-errors'
 import cookieSession from 'cookie-session'
-import { errorHandler, NotFoundError, currentUser } from '@gtickets/common'
+import { errorHandler, NotFoundError } from '@gtickets/common'
+import { showStockRouter } from './routes/show'
+import { indexStockRouter } from './routes'
 
 
 const app = express()
@@ -17,7 +19,8 @@ app.use(
 	})
 )
 
-app.use(currentUser)
+app.use(showStockRouter)
+app.use(indexStockRouter)
 
 app.all('*', async (req, res) => {
 	throw new NotFoundError()
