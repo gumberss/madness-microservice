@@ -8,7 +8,7 @@ interface ProductAttrs {
 	description: string
 }
 
-interface ProductDoc extends mongoose.Document {
+export interface ProductDoc extends mongoose.Document {
 	title: string
 	price: string
 	description: string
