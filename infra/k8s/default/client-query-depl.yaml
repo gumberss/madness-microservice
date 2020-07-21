@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-query-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: client-query
+  template:
+    metadata: 
+      labels:
+        app: client-query
+    spec:
+      containers:
+        - name: client-query
+          image: gumberss/elixir-test
+          env:
+            - name: PGHOST
+              value: client-query-db-srv
+            - name: PGPORT 
+              value: 5432
+            - name: PGUSER
+              value: postgres
+            - name: PGPASSWORD
+              value: postgres
+            - name: PGDATABASE
+              value: ClientQuery
+              
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-query-srv
+spec:
+  selector:
+    app: client-query
+  ports:
+    - name: client-query-port
+      protocol: TCP
+      port: 4000
+      targetPort: 4000

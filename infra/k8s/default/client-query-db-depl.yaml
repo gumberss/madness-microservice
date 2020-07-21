@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-query-db-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: client-query-db
+  template:
+    metadata:
+      labels:
+        app: client-query-db
+    spec:
+      containers:
+        - name: db
+          image: postgres:13-alpine
+          env:
+            - name: POSTGRES_PASSWORD
+              value: postgres
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-query-db-srv
+spec:
+  selector:
+    app: client-query-db
+  ports:
+    - name: db
+      protocol: TCP
+      port: 5432
+      targetPort: 5432
+
+  
