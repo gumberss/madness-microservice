@@ -33,3 +33,19 @@ build:
         manual:
           - src: '**/**'
             dest: .
+    - image: gumberss/madness-client-query
+      context: client_query
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'client_query/assets/**/*'
+            dest: .
+          - src: 'client_query/config/**/*'
+            dest: .
+          - src: 'client_query/lib/**/*'
+            dest: .
+          - src: 'client_query/priv/**/*'
+            dest: .
+          - src: 'client_query/test/**/*'
+            dest: .
