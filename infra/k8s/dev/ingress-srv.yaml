@@ -10,6 +10,10 @@ spec:
     - host: madness.dev
       http:
         paths:
+          - path: /query/?(.*)
+            backend:
+              serviceName: client-query-srv
+              servicePort: 4000
           - path: /api/users/?(.*)
             backend:
               serviceName: auth-srv
@@ -22,3 +26,4 @@ spec:
             backend:
               serviceName: stock-srv
               servicePort: 3000
+          

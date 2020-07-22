@@ -14,12 +14,12 @@ spec:
     spec:
       containers:
         - name: client-query
-          image: gumberss/elixir-test
+          image: gumberss/madness-client-query
           env:
             - name: PGHOST
               value: client-query-db-srv
             - name: PGPORT 
-              value: 5432
+              value: "5432"
             - name: PGUSER
               value: postgres
             - name: PGPASSWORD
