@@ -5,8 +5,10 @@ defmodule ClientQueryWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", ClientQueryWeb do
+  scope "/query", ClientQueryWeb do
     pipe_through :api
+
+    get "/products", ProductController, :index
   end
 
   # Enables LiveDashboard only for development
