@@ -4,13 +4,13 @@ import { updateIfCurrentPlugin } from 'mongoose-update-if-current'
 interface ProductAttrs {
 	id: string
 	title: string
-	price: string
+	price: number
 	description: string
 }
 
 export interface ProductDoc extends mongoose.Document {
 	title: string
-	price: string
+	price: number
 	description: string
 }
 

@@ -1,7 +1,7 @@
 export interface ProductUpdatedEvent {
 	id: string
 	title: string
-	price: string
+	price: number
 	description: string
 	version: number
 }
