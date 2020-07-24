@@ -29,10 +29,7 @@ build:
       context: products
       docker:
         dockerfile: Dockerfile
-      sync:
-        manual:
-          - src: '**/**'
-            dest: .
+   
     - image: gumberss/madness-client-query
       context: client_query
       docker:
