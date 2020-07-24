@@ -11,7 +11,10 @@ istio:
       - choco install istioctl
       - istioctl install --set profile=demo
     
-
+MongoDb:
+  - https://docs.mongodb.com/drivers/java
+  - https://mongodb.github.io/mongo-java-driver/3.4/driver/getting-started/quick-start/
+  - https://www.mongodb.com/blog/post/quick-start-java-and-mongodb--mapping-pojos?utm_campaign=javapojos&utm_source=twitter&utm_medium=organic_social
 
 Errors:
   - https://cursos.alura.com.br/forum/topico-no-compiler-is-provided-in-this-environment-perhaps-you-are-running-on-a-jre-rather-than-a-jdk-80336
