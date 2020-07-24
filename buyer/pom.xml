@@ -30,6 +30,11 @@
     </dependencies>
   </dependencyManagement>
   <dependencies>
+  <dependency>
+    <groupId>org.mongodb</groupId>
+    <artifactId>mongodb-driver-sync</artifactId>
+    <version>4.0.5</version>
+  </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-resteasy</artifactId>
