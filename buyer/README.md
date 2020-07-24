@@ -1,6 +1,6 @@
 # buyer project
 
-![Buyer flow](../documentation/buyer_v0.1.png)
+![Buyer flow](../documentation/buyer.png)
 
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
