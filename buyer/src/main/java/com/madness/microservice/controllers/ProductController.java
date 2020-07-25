@@ -13,6 +13,7 @@ import com.madness.microservice.models.Order;
 import com.madness.microservice.models.Product;
 
 import org.bson.types.ObjectId;
+import org.eclipse.microprofile.config.ConfigProvider;
 import org.eclipse.microprofile.metrics.annotation.Counted;
 import org.eclipse.microprofile.metrics.annotation.Timed;
 
@@ -21,7 +22,7 @@ public class ProductController {
 
     private MongoConnection _conn;
 
-	@Inject
+    @Inject
 
     public ProductController(MongoConnection conn) {
         this._conn = conn;
@@ -38,7 +39,10 @@ public class ProductController {
         p.providerId = ObjectId.get();
         p.quantity = 3;
 
-        _conn.connect("mongodb://localhost:27017");
+        String mongoConnString = ConfigProvider.getConfig().getValue("mongo.uri", String.class);
+
+        _conn.connect(mongoConnString);
+        
         var orders = _conn.db().getCollection("orders", Order.class);
         var a = orders.insertOne(p).getInsertedId();
 
