@@ -45,7 +45,7 @@ public class OrderController {
 
         String mongoConnString = ConfigProvider.getConfig().getValue("mongo.uri", String.class);
 
-        var orders = _conn.collection("order", Order.class);
+        var orders = _conn.collection("orders", Order.class);
         
         var a = orders.insertOne(order).getInsertedId();
         
