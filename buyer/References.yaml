@@ -20,6 +20,11 @@ Dependency injection:
   - https://www.baeldung.com/spring-annotations-resource-inject-autowire#Inject
   - https://docs.jboss.org/weld/reference/1.1.0.Final/en-US/html/injection.html
 
+
+Environment variables:
+  - https://quarkus.io/guides/config#combining-property-expressions-and-environment-variables
+
+
 Errors:
   - https://cursos.alura.com.br/forum/topico-no-compiler-is-provided-in-this-environment-perhaps-you-are-running-on-a-jre-rather-than-a-jdk-80336
   - https://keepgrowing.in/tools/debugging-the-fatal-error-compiling-invalid-target-release-11-issue-how-to-switch-your-development-environment-and-intellij-settings-to-java-11/
