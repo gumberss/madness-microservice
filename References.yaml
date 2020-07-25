@@ -1,0 +1,6 @@
+
+Service port forward:
+  - https://stackoverflow.com/questions/51710614/how-to-connect-mongodb-which-is-running-on-kubernetes-cluster-through-ui-tools-l#:~:text=You%20can%20use%20kubectl%20port,the%20pod%20inside%20the%20cluster.
+
+ingress-nginx:
+  - https://kubernetes.github.io/ingress-nginx/deploy/
