@@ -1,5 +1,6 @@
 Quarkus:
   - https://www.youtube.com/watch?v=ooLEpm4CXBY
+  - https://quarkus.io/guides/getting-started
 
 Commands:
   - mvn compile quarkus:dev
@@ -24,6 +25,9 @@ Dependency injection:
 Environment variables:
   - https://quarkus.io/guides/config#combining-property-expressions-and-environment-variables
 
+
+Generics:
+  - https://www.baeldung.com/java-generics
 
 Errors:
   - https://cursos.alura.com.br/forum/topico-no-compiler-is-provided-in-this-environment-perhaps-you-are-running-on-a-jre-rather-than-a-jdk-80336
