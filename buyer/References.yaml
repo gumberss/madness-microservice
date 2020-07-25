@@ -25,6 +25,8 @@ Dependency injection:
 Environment variables:
   - https://quarkus.io/guides/config#combining-property-expressions-and-environment-variables
 
+Gson:
+  - https://sites.google.com/site/gson/gson-user-guide
 
 Generics:
   - https://www.baeldung.com/java-generics
