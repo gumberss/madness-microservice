@@ -1,7 +1,8 @@
-package com.madness.microservice.infra;
+package com.madness.microservice.infra.mongo;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
 import org.bson.codecs.configuration.CodecRegistries;
@@ -17,7 +18,11 @@ public class MongoConnection {
 
   private MongoDatabase _db;
 
+  private boolean _connected = false;
+
   public void connect(String connString) {
+
+    if(_connected) return;
 
     ConnectionString connectionString = new ConnectionString(connString);
     MongoClientSettings settings = MongoClientSettings.builder().applyConnectionString(connectionString)
@@ -33,6 +38,8 @@ public class MongoConnection {
     // import com.mongodb.client.MongoCollection;
     // MongoCollection<Product> products = db.getCollection("products",
     // Product.class);
+
+    _connected = true;
   }
 
   public MongoDatabase db() {
@@ -41,5 +48,9 @@ public class MongoConnection {
     }
 
     return this._db;
+  }
+
+  public <T> MongoCollection<T> collection(String collectionName, Class<T> collectionType){
+      return _db.getCollection(collectionName, collectionType);
   }
 }
