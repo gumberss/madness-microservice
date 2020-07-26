@@ -8,13 +8,14 @@ import com.mongodb.client.MongoDatabase;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
+import org.eclipse.microprofile.config.ConfigProvider;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.MongoClientSettings;
 import javax.inject.Singleton;
 
 @Singleton
-public class MongoConnection {
+public class MongoDbConnection {
 
   private MongoDatabase _db;
 
@@ -22,7 +23,8 @@ public class MongoConnection {
 
   public void connect(String connString) {
 
-    if(_connected) return;
+    if (_connected)
+      return;
 
     ConnectionString connectionString = new ConnectionString(connString);
     MongoClientSettings settings = MongoClientSettings.builder().applyConnectionString(connectionString)
@@ -43,14 +45,15 @@ public class MongoConnection {
   }
 
   public MongoDatabase db() {
-    if (_db == null) {
-      throw new IllegalArgumentException("The database wasn't initiated, the connect method should be called first");
+    if (!_connected) {
+      String mongoConnString = ConfigProvider.getConfig().getValue("mongo.uri", String.class);
+      connect(mongoConnString);
     }
 
     return this._db;
   }
 
-  public <T> MongoCollection<T> collection(String collectionName, Class<T> collectionType){
-      return _db.getCollection(collectionName, collectionType);
+  public <T> MongoCollection<T> collection(String collectionName, Class<T> collectionType) {
+    return db().getCollection(collectionName, collectionType);
   }
 }

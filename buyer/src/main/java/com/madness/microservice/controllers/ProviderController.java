@@ -15,18 +15,16 @@ import javax.ws.rs.core.Response;
 
 import com.google.gson.Gson;
 import com.madness.microservice.infra.gson.GsonSerializer;
-import com.madness.microservice.infra.mongo.MongoConnection;
+import com.madness.microservice.infra.mongo.MongoDbConnection;
 import com.madness.microservice.models.Provider;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.FindOneAndReplaceOptions;
 import com.mongodb.client.model.ReturnDocument;
 
-import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.eclipse.microprofile.config.ConfigProvider;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
-import static com.mongodb.client.model.Updates.push;
 
 @Path("/buyer/providers")
 @Produces(MediaType.APPLICATION_JSON)
@@ -37,10 +35,10 @@ public class ProviderController {
     private Gson gson;
 
     @Inject
-    public ProviderController(MongoConnection conn, GsonSerializer serializer) {
+    public ProviderController(MongoDbConnection conn, GsonSerializer serializer) {
         String mongoConnString = ConfigProvider.getConfig().getValue("mongo.uri", String.class);
 
-        conn.connect(mongoConnString);
+        // conn.connect(mongoConnString);
         this._collection = conn.collection("providers", Provider.class);
         this.gson = serializer.gson;
     }

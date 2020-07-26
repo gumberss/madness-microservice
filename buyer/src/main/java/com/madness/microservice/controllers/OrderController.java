@@ -22,18 +22,18 @@ import org.eclipse.microprofile.metrics.annotation.Timed;
 
 import com.google.gson.Gson;
 import com.madness.microservice.infra.gson.GsonSerializer;
-import com.madness.microservice.infra.mongo.MongoConnection;
+import com.madness.microservice.infra.mongo.MongoDbConnection;
 
 @Path("/buyer/orders")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class OrderController {
 
-    private MongoConnection _conn;
+    private MongoDbConnection _conn;
     private Gson gson;
 
     @Inject
-    public OrderController(MongoConnection conn, GsonSerializer serializer) {
+    public OrderController(MongoDbConnection conn, GsonSerializer serializer) {
         this._conn = conn;
         this.gson = serializer.gson;
     }
@@ -56,19 +56,12 @@ public class OrderController {
     @Produces(MediaType.TEXT_PLAIN)
     @Timed
     public Response get() {
-
-        String mongoConnString = ConfigProvider.getConfig().getValue("mongo.uri", String.class);
-
-        _conn.connect(mongoConnString);
-        
         var orders = _conn.collection("order", Order.class);
         
         var a = orders.find().cursor();
 
-
         List<Order> b = new ArrayList<Order>();
 
-        
         while(a.hasNext()){
             var or = a.next();
             b.add(or);
