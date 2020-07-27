@@ -2,6 +2,7 @@ Quarkus:
   - https://www.youtube.com/watch?v=ooLEpm4CXBY
   - https://quarkus.io/guides/getting-started
   - https://quarkus.io/guides/command-mode-reference
+  - https://quarkus.io/guides/lifecycle
 
 Commands:
   - mvn compile quarkus:dev
@@ -22,6 +23,10 @@ Dependency injection:
   - https://www.baeldung.com/spring-annotations-resource-inject-autowire#Inject
   - https://docs.jboss.org/weld/reference/1.1.0.Final/en-US/html/injection.html
 
+RabbitMq:
+  - https://www.rabbitmq.com/java-client.html
+  - https://www.rabbitmq.com/tutorials/tutorial-three-java.html
+  - https://medium.com/tango-labs/usando-rabbitmq-para-turbinar-suas-aplica%C3%A7%C3%B5es-java-32020f03a24c
 
 Environment variables:
   - https://quarkus.io/guides/config#combining-property-expressions-and-environment-variables
