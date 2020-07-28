@@ -7,7 +7,6 @@ import com.madness.microservice.infra.mongo.MongoDbConnection;
 import com.madness.microservice.infra.rabbitmq.Exchanges;
 import com.madness.microservice.infra.rabbitmq.events.ProductCreatedEvent;
 import com.madness.microservice.models.Product;
-import com.mongodb.client.MongoCollection;
 
 @Singleton
 public class ProductCreatedListener extends Listener<ProductCreatedEvent> {
