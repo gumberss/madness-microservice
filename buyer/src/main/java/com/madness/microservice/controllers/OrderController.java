@@ -14,15 +14,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.madness.microservice.models.Order;
-import com.mongodb.client.model.Filters;
-
-import org.bson.types.ObjectId;
-import org.eclipse.microprofile.config.ConfigProvider;
 import org.eclipse.microprofile.metrics.annotation.Timed;
 
 import com.google.gson.Gson;
 import com.madness.microservice.infra.gson.GsonSerializer;
 import com.madness.microservice.infra.mongo.MongoDbConnection;
+import com.madness.microservice.infra.rabbitmq.Exchanges;
+import com.madness.microservice.infra.rabbitmq.RabbitMqConnection;
 
 @Path("/buyer/orders")
 @Produces(MediaType.APPLICATION_JSON)
@@ -30,12 +28,14 @@ import com.madness.microservice.infra.mongo.MongoDbConnection;
 public class OrderController {
 
     private MongoDbConnection _conn;
-    private Gson gson;
+    private Gson _gson;
+    private RabbitMqConnection _rabbitMq;
 
     @Inject
-    public OrderController(MongoDbConnection conn, GsonSerializer serializer) {
+    public OrderController(MongoDbConnection conn, GsonSerializer serializer, RabbitMqConnection rabbitMq) {
         this._conn = conn;
-        this.gson = serializer.gson;
+        this._gson = serializer.gson;
+        this._rabbitMq = rabbitMq;
     }
 
     @POST
@@ -43,12 +43,11 @@ public class OrderController {
     @Timed
     public Response post(Order order) {
 
-        String mongoConnString = ConfigProvider.getConfig().getValue("mongo.uri", String.class);
-
         var orders = _conn.collection("orders", Order.class);
         
         var a = orders.insertOne(order).getInsertedId();
         
+
         return Response.ok(a.toString()).build();
     }
 
@@ -67,6 +66,6 @@ public class OrderController {
             b.add(or);
         }
         
-        return Response.ok(gson.toJson(b)).build();
+        return Response.ok(_gson.toJson(b)).build();
     }
 }

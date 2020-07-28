@@ -12,5 +12,8 @@ public class Product {
     this.id = new ObjectId(id);
   }
 
+  public Product() {
+  }
+
   public ObjectId id;
 }
