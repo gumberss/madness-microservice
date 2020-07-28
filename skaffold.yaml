@@ -29,6 +29,11 @@ build:
       context: products
       docker:
         dockerfile: Dockerfile
+
+    - image: gumberss/madness-buyer
+      context: buyer
+      docker:
+        dockerfile: Dockerfile.jvm
    
     - image: gumberss/madness-client-query
       context: client_query

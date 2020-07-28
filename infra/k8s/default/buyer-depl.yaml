@@ -23,7 +23,6 @@ spec:
       - env:      
         name: madness-buyer
         image: gumberss/madness-buyer
-        imagePullPolicy: Always
         ports:
         - containerPort: 8080
           name: http
