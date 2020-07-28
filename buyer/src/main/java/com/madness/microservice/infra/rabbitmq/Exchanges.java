@@ -1,7 +1,8 @@
 package com.madness.microservice.infra.rabbitmq;
 
 public enum Exchanges {
-  ProductCreated("product:created");
+  ProductCreated("product:created"),
+  ProductPurchased("product:purchased");
 
   private String _exchange;
 
