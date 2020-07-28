@@ -34,7 +34,7 @@ public abstract class Listener<T> {
       @Override
       public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body)
           throws IOException {
-            
+
         String message = new String(body, "UTF-8");
 
         System.out.println("message received: " + message);
@@ -48,10 +48,14 @@ public abstract class Listener<T> {
 
           channel.basicAck(deliveryTag, false);
         } catch (Exception ex) {
-          System.out.println("An erorr curred consuming data from RabbitMq. Tag:" + consumerTag + "| Message:"
-              + message + "| Error: " + ex.getMessage());
+          System.out.println("An erorr curred consuming data from RabbitMq. Tag:" + consumerTag + "| Message:" + message
+              + "| Error: " + ex.getMessage() + "|| Complete: ");
+
+          ex.printStackTrace();
+
           System.out.println(ex);
-          channel.basicNack(deliveryTag, false, true);
+
+          channel.basicNack(deliveryTag, false, false);
         }
       }
     };

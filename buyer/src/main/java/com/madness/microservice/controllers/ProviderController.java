@@ -23,7 +23,6 @@ import com.mongodb.client.model.FindOneAndReplaceOptions;
 import com.mongodb.client.model.ReturnDocument;
 
 import org.bson.types.ObjectId;
-import org.eclipse.microprofile.config.ConfigProvider;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
 @Path("/buyer/providers")
@@ -36,9 +35,6 @@ public class ProviderController {
 
     @Inject
     public ProviderController(MongoDbConnection conn, GsonSerializer serializer) {
-        String mongoConnString = ConfigProvider.getConfig().getValue("mongo.uri", String.class);
-
-        // conn.connect(mongoConnString);
         this._collection = conn.collection("providers", Provider.class);
         this.gson = serializer.gson;
     }
@@ -65,7 +61,7 @@ public class ProviderController {
     @POST
     public Response post(Provider provider) {
 
-        this._collection.insertOne(provider).getInsertedId();
+        this._collection.insertOne(provider);
 
         return Response.ok(gson.toJson(provider)).build();
     }
