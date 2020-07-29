@@ -13,6 +13,10 @@ istio:
     command:
       - choco install istioctl
       - istioctl install --set profile=demo
+      
+Spring boot validation:
+  - http://www.appsdeveloperblog.com/validate-request-body-in-restful-web-service/
+  - https://www.baeldung.com/spring-boot-bean-validation
     
 MongoDb:
   - https://docs.mongodb.com/drivers/java
@@ -44,3 +48,5 @@ Errors:
 
 So sad:
   - https://stackoverflow.com/questions/40813060/how-to-catch-exception-when-creating-mongoclient-instance
+
+
