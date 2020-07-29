@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -15,11 +16,13 @@ import javax.ws.rs.core.Response;
 
 import com.madness.microservice.models.Order;
 import org.eclipse.microprofile.metrics.annotation.Timed;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
 import com.madness.microservice.infra.gson.GsonSerializer;
 import com.madness.microservice.infra.mongo.MongoDbConnection;
-import com.madness.microservice.infra.rabbitmq.Exchanges;
 import com.madness.microservice.infra.rabbitmq.RabbitMqConnection;
 
 @Path("/buyer/orders")
@@ -39,16 +42,12 @@ public class OrderController {
     }
 
     @POST
-    @Produces(MediaType.TEXT_PLAIN)
-    @Timed
-    public Response post(Order order) {
-
+    public Response post(@Valid @RequestBody Order order) {
         var orders = _conn.collection("orders", Order.class);
-        
-        var a = orders.insertOne(order).getInsertedId();
-        
 
-        return Response.ok(a.toString()).build();
+        orders.insertOne(order);
+
+        return Response.ok(_gson.toJson(order)).build();
     }
 
     @GET
@@ -56,16 +55,16 @@ public class OrderController {
     @Timed
     public Response get() {
         var orders = _conn.collection("order", Order.class);
-        
+
         var a = orders.find().cursor();
 
         List<Order> b = new ArrayList<Order>();
 
-        while(a.hasNext()){
+        while (a.hasNext()) {
             var or = a.next();
             b.add(or);
         }
-        
+
         return Response.ok(_gson.toJson(b)).build();
     }
 }
