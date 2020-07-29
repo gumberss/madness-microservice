@@ -15,7 +15,7 @@ import com.rabbitmq.client.Envelope;
 public abstract class Listener<T> {
 
   @Inject
-  private RabbitMqConnection _connection;
+  public RabbitMqConnection connection;
 
   @Inject
   GsonSerializer _serializer;
@@ -26,9 +26,9 @@ public abstract class Listener<T> {
 
   public void listen(Class<T> clazz) throws IOException {
 
-    _connection.registerQueue(exchange().getValue(), queue());
+    connection.registerQueue(exchange().getValue(), queue());
 
-    var channel = _connection.channel();
+    var channel = connection.channel();
 
     Consumer consumer = new DefaultConsumer(channel) {
       @Override
@@ -60,7 +60,7 @@ public abstract class Listener<T> {
       }
     };
 
-    _connection.channel().basicConsume(queue(), false, consumer);
+    connection.channel().basicConsume(queue(), false, consumer);
 
   }
 
