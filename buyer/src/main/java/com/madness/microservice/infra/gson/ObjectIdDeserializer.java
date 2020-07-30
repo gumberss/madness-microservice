@@ -25,8 +25,6 @@ public class ObjectIdDeserializer implements JsonDeserializer<ObjectId>, JsonbDe
   public ObjectId deserialize(JsonParser parser, DeserializationContext ctx, Type rtType) {
      String value = parser.getString();
 
-     System.out.println(value);
-
      return value == null ? null : new ObjectId(value);
 
   }
