@@ -13,11 +13,20 @@ istio:
     command:
       - choco install istioctl
       - istioctl install --set profile=demo
-      
+
 Spring boot validation:
   - http://www.appsdeveloperblog.com/validate-request-body-in-restful-web-service/
   - https://www.baeldung.com/spring-boot-bean-validation
-    
+
+Exception Handling:
+  - https://quarkus.io/guides/validation
+  - https://howtodoinjava.com/spring-boot2/spring-rest-request-validation/
+  - https://www.baeldung.com/spring-boot-bean-validation
+  - https://stackoverflow.com/questions/17651395/convert-jsonobject-to-string
+  - With Quarkus:
+    - https://stackoverflow.com/questions/60008540/quarkus-exception-handler
+    - https://howtodoinjava.com/resteasy/resteasy-exceptionmapper-example/
+  
 MongoDb:
   - https://docs.mongodb.com/drivers/java
   - https://mongodb.github.io/mongo-java-driver/3.4/driver/getting-started/quick-start/
@@ -40,6 +49,14 @@ Gson:
 
 Generics:
   - https://www.baeldung.com/java-generics
+  
+
+Stream:
+  - https://stackoverflow.com/questions/47495234/is-there-an-equivalent-of-javascripts-array-map-in-java-8
+  - https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collectors.html
+  - https://www.baeldung.com/java-difference-map-and-flatmap
+  - https://stackoverflow.com/questions/31763930/new-object-instantiation-when-using-java-8-streams
+
 
 Errors:
   - https://cursos.alura.com.br/forum/topico-no-compiler-is-provided-in-this-environment-perhaps-you-are-running-on-a-jre-rather-than-a-jdk-80336
