@@ -50,6 +50,9 @@ Gson:
 Generics:
   - https://www.baeldung.com/java-generics
 
+Array:
+  - https://howtodoinjava.com/java/collections/create-list-with-single-element/#:~:text=Using%20Collections.,in%20list%2C%20at%20any%20condition.
+
 Stream:
   - https://stackoverflow.com/questions/47495234/is-there-an-equivalent-of-javascripts-array-map-in-java-8
   - https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collectors.html
