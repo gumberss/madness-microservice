@@ -1,5 +1,6 @@
 package com.madness.microservice.controllers;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,9 @@ import com.google.gson.Gson;
 import com.madness.microservice.infra.gson.GsonSerializer;
 import com.madness.microservice.infra.mongo.MongoDbConnection;
 import com.madness.microservice.infra.rabbitmq.RabbitMqConnection;
+import com.madness.microservice.infra.rabbitmq.events.ProductPurchasedEvent;
+import com.madness.microservice.infra.rabbitmq.publishers.ProductPurchasedPublisher;
+import javax.ws.rs.core.Response.Status;
 
 @Path("/buyer/orders")
 @Produces(MediaType.APPLICATION_JSON)
@@ -33,19 +37,37 @@ public class OrderController {
     private MongoDbConnection _conn;
     private Gson _gson;
     private RabbitMqConnection _rabbitMq;
+    private ProductPurchasedPublisher _productPurchasedPublisher;
 
     @Inject
-    public OrderController(MongoDbConnection conn, GsonSerializer serializer, RabbitMqConnection rabbitMq) {
+    public OrderController(MongoDbConnection conn, GsonSerializer serializer, RabbitMqConnection rabbitMq,
+            ProductPurchasedPublisher productPurchasedPublisher) {
         this._conn = conn;
         this._gson = serializer.gson;
         this._rabbitMq = rabbitMq;
+        this._productPurchasedPublisher = productPurchasedPublisher;
     }
 
     @POST
-    public Response post(@Valid @RequestBody Order order) {
+    public Response post(@Valid @RequestBody Order order) throws Exception {
         var orders = _conn.collection("orders", Order.class);
 
         orders.insertOne(order);
+
+        var productPurchasedEvent = new ProductPurchasedEvent();
+        productPurchasedEvent.id = order.id.toString();
+        productPurchasedEvent.price = order.price;
+        productPurchasedEvent.productId = order.product.id.toString();
+        productPurchasedEvent.providerId = order.provider.id.toString();
+        productPurchasedEvent.quantity = order.quantity;
+        productPurchasedEvent.type = order.type;
+        try {
+            _productPurchasedPublisher.publish(productPurchasedEvent);
+        } catch (Exception ex) {
+            System.out.println("There was a problem sending product purchased event: " + ex.getMessage() + "| Ex: "
+                    + ex.toString());
+                throw ex;
+        }
 
         return Response.ok(_gson.toJson(order)).build();
     }
