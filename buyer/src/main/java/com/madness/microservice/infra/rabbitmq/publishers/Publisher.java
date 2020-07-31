@@ -14,6 +14,9 @@ public abstract class Publisher<T> {
 
   protected abstract Exchanges exchange();
 
+  protected Publisher() {
+  }
+
   public Publisher(RabbitMqConnection rabbitMq, GsonSerializer serializer) {
     _rabbitMq = rabbitMq;
     _gson = serializer.gson;
