@@ -24,5 +24,4 @@ public class ConstraintViolationExceptionHandler implements ExceptionMapper<Cons
 
     return Response.status(Status.BAD_REQUEST).entity(new BusinessError(returnErrors)).build();
   }
-
 }

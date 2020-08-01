@@ -26,6 +26,6 @@ public abstract class Publisher<T> {
 
     var bytes = _gson.toJson(data).getBytes();
 
-    _rabbitMq.channel().basicPublish(exchange().getValue(), "", null, bytes);
+    _rabbitMq.connection().createChannel().basicPublish(exchange().getValue(), "", null, bytes);
   }
 }
