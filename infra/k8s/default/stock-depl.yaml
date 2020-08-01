@@ -15,6 +15,13 @@ spec:
       containers:
         - name: madness-stock 
           image: gumberss/madness-stock
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "150m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
           env:
             - name: MONGO_URI
               value: 'mongodb://stock-mongo-srv:27017/stock' 

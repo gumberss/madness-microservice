@@ -15,6 +15,13 @@ spec:
       containers:
         - name: madness-stock-mongo
           image: mongo
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "300m"
+            limits:
+              memory: "256Mi"
+              cpu: "600m"
 ---
 apiVersion: v1
 kind: Service
