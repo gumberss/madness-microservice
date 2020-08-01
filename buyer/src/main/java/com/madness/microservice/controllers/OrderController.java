@@ -14,15 +14,20 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.madness.microservice.models.Order;
+import com.madness.microservice.models.Product;
+import com.madness.microservice.models.Provider;
+
 import org.eclipse.microprofile.metrics.annotation.Timed;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.google.gson.Gson;
+import com.madness.microservice.errors.BusinessException;
 import com.madness.microservice.infra.gson.GsonSerializer;
 import com.madness.microservice.infra.mongo.MongoDbConnection;
 import com.madness.microservice.infra.rabbitmq.events.ProductPurchasedEvent;
 import com.madness.microservice.infra.rabbitmq.publishers.ProductPurchasedPublisher;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
 
 @Path("/buyer/orders")
 @Produces(MediaType.APPLICATION_JSON)
@@ -46,6 +51,20 @@ public class OrderController {
     @POST
     public Response post(@Valid @RequestBody Order order) throws Exception {
         _orderCollection.insertOne(order);
+
+        var productCollection = _conn.collection("products", Product.class);
+        var byProductId = Filters.eq("_id", order.product.id);
+        var product = productCollection.find(byProductId).first();
+        if (product == null) {
+            throw new BusinessException("It is possible to buy only registered products", "product");
+        }
+
+        var providerCollection = _conn.collection("providers", Provider.class);
+        var byProviderId = Filters.eq("_id", order.provider.id);
+        var provider = providerCollection.find(byProviderId).first();
+        if (provider == null) {
+            throw new BusinessException("It is possible to buy only from registered providers", "provider");
+        }
 
         var productPurchasedEvent = new ProductPurchasedEvent();
         productPurchasedEvent.id = order.id.toString();
