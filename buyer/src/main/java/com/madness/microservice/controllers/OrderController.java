@@ -1,9 +1,7 @@
 package com.madness.microservice.controllers;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -17,17 +15,14 @@ import javax.ws.rs.core.Response;
 
 import com.madness.microservice.models.Order;
 import org.eclipse.microprofile.metrics.annotation.Timed;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
 import com.madness.microservice.infra.gson.GsonSerializer;
 import com.madness.microservice.infra.mongo.MongoDbConnection;
-import com.madness.microservice.infra.rabbitmq.RabbitMqConnection;
 import com.madness.microservice.infra.rabbitmq.events.ProductPurchasedEvent;
 import com.madness.microservice.infra.rabbitmq.publishers.ProductPurchasedPublisher;
-import javax.ws.rs.core.Response.Status;
+import com.mongodb.client.MongoCollection;
 
 @Path("/buyer/orders")
 @Produces(MediaType.APPLICATION_JSON)
@@ -36,23 +31,21 @@ public class OrderController {
 
     private MongoDbConnection _conn;
     private Gson _gson;
-    private RabbitMqConnection _rabbitMq;
     private ProductPurchasedPublisher _productPurchasedPublisher;
+    private MongoCollection<Order> _orderCollection;
 
     @Inject
-    public OrderController(MongoDbConnection conn, GsonSerializer serializer, RabbitMqConnection rabbitMq,
+    public OrderController(MongoDbConnection conn, GsonSerializer serializer,
             ProductPurchasedPublisher productPurchasedPublisher) {
         this._conn = conn;
         this._gson = serializer.gson;
-        this._rabbitMq = rabbitMq;
         this._productPurchasedPublisher = productPurchasedPublisher;
+        _orderCollection = _conn.collection("orders", Order.class);
     }
 
     @POST
     public Response post(@Valid @RequestBody Order order) throws Exception {
-        var orders = _conn.collection("orders", Order.class);
-
-        orders.insertOne(order);
+        _orderCollection.insertOne(order);
 
         var productPurchasedEvent = new ProductPurchasedEvent();
         productPurchasedEvent.id = order.id.toString();
@@ -66,27 +59,24 @@ public class OrderController {
         } catch (Exception ex) {
             System.out.println("There was a problem sending product purchased event: " + ex.getMessage() + "| Ex: "
                     + ex.toString());
-                throw ex;
+            throw ex;
         }
 
         return Response.ok(_gson.toJson(order)).build();
     }
 
     @GET
-    @Produces(MediaType.TEXT_PLAIN)
     @Timed
     public Response get() {
-        var orders = _conn.collection("order", Order.class);
+        var ordersCursor = _orderCollection.find().cursor();
 
-        var a = orders.find().cursor();
+        List<Order> orders = new ArrayList<Order>();
 
-        List<Order> b = new ArrayList<Order>();
-
-        while (a.hasNext()) {
-            var or = a.next();
-            b.add(or);
+        while (ordersCursor.hasNext()) {
+            var order = ordersCursor.next();
+            orders.add(order);
         }
 
-        return Response.ok(_gson.toJson(b)).build();
+        return Response.ok(_gson.toJson(orders)).build();
     }
 }
