@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Domain.Exceptions;
 using Domain.Extensions;
@@ -15,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using Rabbit.Events;
+using WebApi.ViewModel;
 
 namespace WebApi.Controllers
 {
@@ -47,12 +46,18 @@ namespace WebApi.Controllers
         {
             var products = _productContext.Products;
 
-            return Ok(products);
+            var productModels = products
+                .ToList()
+                .Select(product => new ProductModel(product));
+
+            return Ok(productModels);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Product product)
+        public async Task<IActionResult> Post([FromBody] ProductModel productModel)
         {
+            Product product = productModel;
+
             var errors = _productValidator.Validate(product);
 
             if (errors.Any()) return BadRequest(errors);
@@ -69,18 +74,20 @@ namespace WebApi.Controllers
                 Description = product.Description,
                 Version = product.Version
             });
-
-            return Ok(product);
+            
+            return Ok(new ProductModel(product));
         }
 
-        [HttpPut("{id}")]   
-        public async Task<IActionResult> Put(Guid id, [FromBody] Product product)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(String id, [FromBody] ProductModel product)
         {
+            Guid productId = id.AsObjectId().AsGuid();
+
             var errors = _productValidator.Validate(product);
 
             if (errors.Any()) return BadRequest(errors);
 
-            var existentProduct = _productContext.Products.Find(id);
+            var existentProduct = _productContext.Products.Find(productId);
 
             if (existentProduct == null)
             {
@@ -107,7 +114,7 @@ namespace WebApi.Controllers
                 Version = existentProduct.Version
             });
 
-            return Ok(existentProduct);
+            return Ok(new ProductModel(existentProduct));
         }
     }
 }

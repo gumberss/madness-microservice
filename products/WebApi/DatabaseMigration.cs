@@ -51,18 +51,11 @@ namespace WebApi
             catch (Exception ex)
             {
                 var logger = services.GetRequiredService<ILogger<Program>>();
-                logger.LogError( "An error occurred while migrating the database.");
-                Console.WriteLine("An error occurred while migrating the database.");
-
-                if(times == 15)
-                {
-                    logger.LogError(ex, "Server tried to migrate database 15 times and failed all times.");
-                    Console.WriteLine($"Server tried to migrate database 15 times and failed all times. {ex}");
-                    throw;
-                }
+                logger.LogError($"An error occurred while migrating the database. {ex}");
+                Console.WriteLine($"An error occurred while migrating the database. {ex}");
 
                 Thread.Sleep(1500);
-                MigrateDatabase(services, context, ++times);
+                throw;
             }
         }
     }

@@ -22,5 +22,10 @@ namespace Domain.Extensions
             var oid = new ObjectId(bytes);
             return oid;
         }
+
+        public static ObjectId AsObjectId(this String id)
+        {
+            return new ObjectId(id);
+        }
     }
 }
