@@ -17,22 +17,22 @@ export class ProductCreatedListener extends Listener<ProductCreatedEvent> {
 
 		console.log(content.id)
 
+		const stock = Stock.build({
+			quantity: 0,
+			availableQuantity: 0,
+		})
+
+		await stock.save()
+
 		const product = Product.build({
 			id,
 			title,
 			description,
 			price,
+			stock
 		})
 
 		await product.save()
-
-		const stock = Stock.build({
-			quantity: 0,
-			availableQuantity: 0,
-			product: product
-		})
-		
-		await stock.save()
 
 		console.log(`Product created: ${product._id}`)
 	}
