@@ -4,6 +4,7 @@ import { rabbitMq } from './infra/rabbitmq/rabbitmq'
 import { app } from './app'
 import { ProductCreatedListener } from './infra/rabbitmq/listeners/ProductCreatedListener'
 import { ProductUpdatedListener } from "./infra/rabbitmq/listeners/ProductUpdatedListener"
+import { ProductPurchasedListener } from './infra/rabbitmq/listeners/ProductPurchasedListener'
 
 const start = async () => {
 	console.log('Starting up....')
@@ -40,6 +41,9 @@ const start = async () => {
 			).listen(),
 			new ProductUpdatedListener(
 				`product:updated:${process.env.RABBITMQ_QUEUE_NAME}`
+			).listen(),
+			new ProductPurchasedListener(
+				`product:purchased:${process.env.RABBITMQ_QUEUE_NAME}`
 			).listen(),
 		]
 
