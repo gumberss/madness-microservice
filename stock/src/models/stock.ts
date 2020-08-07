@@ -1,15 +1,12 @@
 import mongoose from 'mongoose'
 import { updateIfCurrentPlugin } from 'mongoose-update-if-current'
-import { ProductDoc } from './product'
 
 interface StockAttrs {
-	product: ProductDoc
 	quantity: number
 	availableQuantity: number
 }
 
-interface StockDoc extends mongoose.Document {
-	product: ProductDoc
+export interface StockDoc extends mongoose.Document {
 	quantity: number
 	availableQuantity: number
 	version: number
@@ -30,10 +27,6 @@ const stockSchema = new mongoose.Schema(
 		availableQuantity: {
 			type: Number,
 			required: true,
-		},
-		product: {
-			type: ObjectId,
-			ref: 'Product',
 		},
 	},
 	{
